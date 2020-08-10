@@ -1,0 +1,19 @@
+<div *ngFor="let question of Questions;">
+  <div style="display: flex; justify-content: space-between;">
+    <div>
+      <h3>{{ question.title }}</h3>
+    </div>
+    <div>
+      <button (click)="deleteQuestion(question._id)">Delete</button>
+    </div>
+  </div>
+  <p>{{ question.description }}</p>
+  <div *ngFor="let testcase of question.testcases">
+    <h3>Test-Cases</h3>
+
+   Description-: <b>{{ testcase.description }}</b> <br>
+   Input-:  <b>{{  testcase.input }}</b> <br>
+   Output-: <b>{{ testcase.output }}</b>
+  </div>
+  <hr>
+</div>

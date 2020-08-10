@@ -1,0 +1,31 @@
+<h3>Question Title</h3>
+<textarea rows="3" style="width: 100%;" [(ngModel)] ="questionTitle"></textarea>
+<h3>Description</h3>
+<textarea rows="10" style="width: 100%;" [(ngModel)] ="questionDescription"></textarea>
+<div style="display: flex; justify-content: space-between;">
+  <div>
+    <h3>Test Cases</h3>
+  </div>
+  <div style="margin-top: 30px;">
+    <button (click)="addTestCases()">Add Test Cases</button> &nbsp;
+  </div>
+</div>
+<div *ngFor="let testcase of testcases; let i = index;">
+  <div>
+    <h3>Test Case {{ i + 1 }}</h3>
+    <h4>Description</h4>
+    <textarea rows="2" style="width: 100%;" [(ngModel)] = 'testcase.description'></textarea>
+    <h4>Input</h4>
+    <textarea rows="2" style="width: 100%;" [(ngModel)] = 'testcase.stdin'></textarea>
+    <h4>Output</h4>
+    <textarea rows="2" style="width: 100%;" [(ngModel)] = 'testcase.expectedOutput'></textarea>
+  </div>
+  <br>
+  <button (click)="removeTestCases(i)" *ngIf="i > 0">Remove Test Case</button>
+
+  <hr>
+  <br>
+</div>
+<br>
+<button style="margin: auto;" (click)="addQuestion()">Add Question</button>
+<br>

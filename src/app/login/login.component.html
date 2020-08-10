@@ -1,0 +1,15 @@
+<div>
+  <h1>SignUp</h1>
+  <input placeholder="Name" #name>
+  <input type="email" placeholder="example@email.com" #email>
+  <input type="password" placeholder="password" #password>
+  <button (click)= 'signup(name.value, email.value, password.value)'>Signup</button>
+</div>
+<div>
+  <h1>
+    Login
+  </h1>
+  <input placeholder="email" #loginEmail>
+  <input type="password" placeholder=" password" #loginPassword>
+  <button (click)= 'login(loginEmail.value, loginPassword.value)'>Login</button>
+</div>

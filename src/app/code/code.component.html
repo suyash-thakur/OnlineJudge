@@ -1,0 +1,40 @@
+<div style="display: flex; justify-content: space-between;">
+<div>
+  <h1>{{ question.question.question[0].title }}</h1>
+</div>
+<div>
+  <h1>
+  Score: {{ score }}
+</h1>
+</div>
+</div>
+<h3>{{ question.question.question[0].description }}</h3>
+<select (change)="onlanguageSelect($event.target.value)">
+  <option disabled selected>Select Languages</option>
+  <option *ngFor="let language of languageList" [value]='language.id'>{{ language.name }}</option>
+</select>
+<ngx-monaco-editor [options]="editorOptions" [(ngModel)]="code" style=""></ngx-monaco-editor>
+<h3>Command Line Argument</h3>
+<textarea style="width: 100%; " rows="3" [(ngModel)]="stdin"></textarea>
+<br>
+<br>
+<div *ngIf="this.output != undefined">
+<h3>Output</h3>
+
+<p>{{ this.output.compile_output }}</p>
+<h3>Status</h3>
+
+<p>{{ this.output.status.description }}</p>
+<h3>STDOUT</h3>
+
+<p>{{ this.output.stdout }}</p>
+<br>
+<br>
+</div>
+<button (click)="onComplete()">Submit</button> <button (click)="onSubmit()">Output</button> <button (click)="checkstatus()">Status</button>
+<div *ngFor="let testcase of testcases; let i = index; ">
+  <div style="display: flex; justify-content: space-between;">
+    <div><h3>TestCase {{ i+1 }}</h3></div><div *ngIf="testcaseResultArray.length !== 0 && testcaseResultArray[i].isCorrect === true">Accepted</div><div *ngIf="testcaseResultArray.length !== 0 && testcaseResultArray[i].isCorrect === false">Rejected</div>
+
+  </div>
+</div>

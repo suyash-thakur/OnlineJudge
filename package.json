@@ -19,8 +19,18 @@
     "@angular/platform-browser": "~8.2.13",
     "@angular/platform-browser-dynamic": "~8.2.13",
     "@angular/router": "~8.2.13",
+    "@auth0/angular-jwt": "^5.0.1",
+    "angular-jwt": "^0.1.11",
+    "bcrypt": "^5.0.0",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.25",
+    "ngx-monaco-editor": "^6.0.0",
+    "node-fetch": "^2.6.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
+    "unirest": "^0.6.0",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
