@@ -2,6 +2,7 @@ const express = require("express");
 const fetch = require("node-fetch");
 const Question = require('../Models/Question');
 const TestCase = require("../Models/TestCases");
+const Solution = require("../Models/Solution");
 var request = require("request");
 const { response } = require("express");
 const router = express.Router();
@@ -177,5 +178,19 @@ router.get("/question:id", (req, res, next) => {
       });
     }
   });
+});
+
+router.put("/submitSolution", (req, res, next) => {
+ Solution.update({question: req.body.question, teamId: req.body.teamId}, {teamId: req.body.teamId, question: req.body.question, score: req.body.score, code: req.body.code}, { upsert : true }).then(response => {
+  if(response) {
+    res.status(201).json({
+      data: response
+    }) ;
+  } else {
+    res.status(501).json({
+      error: "couldn't submit"
+    });
+  }
+ });
 });
 module.exports = router;

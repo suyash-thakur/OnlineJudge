@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
 
 const solution = mongoose.Schema({
-  title: {type: String, required:  true},
-  description: {type: String, required: true},
-  testcases: [{type: mongoose.Schema.Types.ObjectId, ref: 'TestCase'}]
+  teamId: {type: mongoose.Schema.Types.ObjectId, ref: 'Participant', required: true},
+  question: {type: mongoose.Schema.Types.ObjectId, ref: 'Question', required: true},
+  score: {type: Number, required: true},
+  code: {type: String, required: true}
+
 });
 
 module.exports = mongoose.model("Solution", solution);

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: 'app-code',
@@ -20,13 +21,14 @@ export class CodeComponent implements OnInit {
   testcases: any;
   result: any;
   score = 0;
+  submitedCode: any;
   i = 0;
   testcaseResultArray = [];
   testcaseResult: {
     info: any,
     isCorrect: boolean;
   };
-  constructor(private router: Router, private http: HttpClient, public activeRoute: ActivatedRoute) {
+  constructor(private router: Router, private http: HttpClient, public activeRoute: ActivatedRoute, private authService: AuthenticationService) {
     this.activeRoute.data.subscribe(data => this.question = data);
     console.log(this.question);
     this.testcases =  this.question.question.question[0].testcases;
@@ -51,7 +53,6 @@ onlanguageSelect(id) {
     code: this.code,
     console: this.stdin
   };
-
   console.log(data);
   this.http.post('http://localhost:3000/api/code/submission', data).subscribe((res: any) => {
   console.log(res);
@@ -67,8 +68,8 @@ checkOutput() {
   }
   this.http.post('http://localhost:3000/api/code/output', token).subscribe( res => {
   this.result = res;
-  // this.result = JSON.parse(this.result.output);
-  console.log(this.result.status);
+  this.result = JSON.parse(this.result.output);
+  console.log(this.result);
   if (this.result.status.id === 1 || this.result.status.id === 2) {
     this.checkOutput();
   } else {
@@ -88,6 +89,7 @@ onComplete() {
       code: this.code,
       console: this.question.question.question[0].testcases[this.i].input
     };
+    this.submitedCode = this.code;
     console.log(data);
     this.http.post('http://localhost:3000/api/code/submission', data).subscribe((res: any) => {
     console.log(res);
@@ -106,7 +108,7 @@ checktestcases() {
   this.result = JSON.parse(this.result.output);
   console.log(this.result.status);
   if (this.result.status.id === 1 || this.result.status.id === 2) {
-    this.checkOutput();
+    this.checktestcases();
   } else {
     this.testcaseResultArray.push({info: this.result, status: false});
     console.log(this.testcaseResultArray);
@@ -117,6 +119,8 @@ checktestcases() {
     } else if (this.i === this.question.question.question[0].testcases.length - 1) {
       console.log('checking test 2');
       this.testcaseResultArray.forEach((items, index) => {
+        console.log(index);
+        console.log(this.question.question.question[0].testcases[index].output);
         if ( this.question.question.question[0].testcases[index].output === items.info.stdout) {
           this.score = this.score + 10;
           items.isCorrect = true;
@@ -125,6 +129,17 @@ checktestcases() {
         }
       });
       console.log(this.testcaseResultArray);
+      const sollution = {
+        question: this.activeRoute.snapshot.paramMap.get('id'),
+        teamId: this.authService.id,
+        code: this.submitedCode,
+        score: this.score
+      };
+      this.http.put('http://localhost:3000/api/code/submitSolution', sollution).subscribe(responce => {
+
+        console.log(responce);
+        this.testcaseResultArray = [];
+      });
     }
 
   }
